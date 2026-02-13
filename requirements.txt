@@ -1,0 +1,14 @@
+torch
+torchvision
+numpy
+Pillow
+scikit-learn
+tqdm
+matplotlib
+seaborn
+tensorflow
+opencv-python
+ipywidgets
+reportlab
+google-genai
+python-dotenv
