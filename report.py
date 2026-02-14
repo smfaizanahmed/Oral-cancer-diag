@@ -119,6 +119,14 @@ This screening assessment serves as a preliminary diagnostic tool and does not c
         # Container for the 'Flowable' objects
         elements = []
         
+        # Add logo if it exists
+        logo_path = os.path.join("assets", "logo.jpeg")
+        if os.path.exists(logo_path):
+            logo = RLImage(logo_path, width=2*inch, height=2*inch)
+            logo.hAlign = 'CENTER'
+            elements.append(logo)
+            elements.append(Spacer(1, 0.2*inch))
+        
         # Define styles
         styles = getSampleStyleSheet()
         title_style = ParagraphStyle(
@@ -150,14 +158,33 @@ This screening assessment serves as a preliminary diagnostic tool and does not c
         )
         
         # Title
-        title = Paragraph("Oral Cancer Screening Report", title_style)
+        title = Paragraph("ORATHERM Oral Cancer Screening Report", title_style)
         elements.append(title)
-        elements.append(Spacer(1, 0.2*inch))
+        elements.append(Spacer(1, 0.1*inch))
         
-        # Report metadata
-        report_date = datetime.now().strftime("%B %d, %Y at %I:%M %p")
-        metadata = Paragraph(f"<i>Generated on: {report_date}</i>", body_style)
-        elements.append(metadata)
+        # Report metadata with date/timestamp
+        report_date = datetime.now().strftime("%B %d, %Y")
+        report_time = datetime.now().strftime("%I:%M %p")
+        report_id = datetime.now().strftime("%Y%m%d%H%M%S")
+        
+        metadata_data = [
+            ['Report Date:', report_date],
+            ['Report Time:', report_time],
+            ['Report ID:', f'OCR-{report_id}']
+        ]
+        
+        metadata_table = Table(metadata_data, colWidths=[1.5*inch, 4.5*inch])
+        metadata_table.setStyle(TableStyle([
+            ('ALIGN', (0, 0), (0, -1), 'RIGHT'),
+            ('ALIGN', (1, 0), (1, -1), 'LEFT'),
+            ('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),
+            ('FONTNAME', (1, 0), (1, -1), 'Helvetica'),
+            ('FONTSIZE', (0, 0), (-1, -1), 10),
+            ('TEXTCOLOR', (0, 0), (-1, -1), colors.HexColor('#34495e')),
+            ('TOPPADDING', (0, 0), (-1, -1), 4),
+            ('BOTTOMPADDING', (0, 0), (-1, -1), 4),
+        ]))
+        elements.append(metadata_table)
         elements.append(Spacer(1, 0.3*inch))
         
         # Patient Demographics Section
